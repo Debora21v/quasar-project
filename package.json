@@ -13,16 +13,21 @@
     "postinstall": "quasar prepare"
   },
   "dependencies": {
-    "pinia": "^3.0.1",
     "@quasar/extras": "^1.16.4",
+    "axios": "^1.15.0",
+    "lucide-vue-next": "^1.0.0",
+    "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "vue": "^3.5.22",
     "vue-router": "^5.0.3"
   },
   "devDependencies": {
     "@quasar/app-vite": "^2.5.1",
-    "autoprefixer": "^10.4.27",
-    "postcss": "^8.5.8"
+    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/vite": "^4.2.2",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^4.2.2"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22.12",
