@@ -27,8 +27,8 @@ const closeDrawerOnMobile = () => {
         border-bottom: 1px solid #93c5fd;
       "
     >
-      <q-toolbar class="flex justify-between px-4 py-2">
-        <div class="flex items-center gap-2">
+      <q-toolbar class="relative justify-between px-3 py-2 sm:px-4">
+        <div class="flex items-center gap-2 min-w-0">
           <q-btn
             v-if="$q.screen.lt.md"
             flat
@@ -40,18 +40,22 @@ const closeDrawerOnMobile = () => {
             aria-label="Abrir menu"
           />
 
-          <Logo class="w-12 h-12" />
-          <span class="text-2xl font-bold text-white">Giphy</span>
+          <div
+            class="absolute left-1/2 flex -translate-x-1/2 items-center gap-2 md:static md:left-auto md:translate-x-0"
+          >
+            <Logo class="w-10 h-10 sm:w-12 sm:h-12" />
+            <span class="text-xl font-bold text-white sm:text-2xl">Giphy</span>
+          </div>
         </div>
 
         <router-link
           to="/about"
-          class="flex items-center gap-2 transition hover:opacity-80"
+          class="ml-auto flex items-center gap-1.5 transition hover:opacity-80 sm:gap-2"
         >
-          <span class="hidden font-semibold text-white sm:inline">
+          <span v-if="!$q.screen.lt.md" class="font-semibold text-white">
             Débora Vitória
           </span>
-          <User class="w-6 text-blue-500 h-7" />
+          <User class="w-5 h-5 text-blue-500 sm:w-6 sm:h-7" />
         </router-link>
       </q-toolbar>
     </q-header>
