@@ -24,20 +24,23 @@ const isFavorite = (id) => {
 </script>
 
 <template>
-  <div class="p-6 mx-auto max-w-7xl">
-    <div class="mb-10 text-center">
-      <div class="text-xl text-blue-200 md:text-5xl">GIFs em alta</div>
-      <p class="mt-2 text-sm text-gray-400">
+  <div class="px-4 py-5 mx-auto max-w-7xl sm:px-6 sm:py-6">
+    <div class="mb-8 text-center sm:mb-10">
+      <div class="text-2xl leading-tight text-blue-200 sm:text-3xl md:text-5xl">
+        GIFs em alta
+      </div>
+      <p class="mt-2 text-base leading-7 text-gray-400 sm:text-sm md:text-base">
         Descubra, explore e favorite os melhores GIFs
       </p>
     </div>
-    <div class="mb-6">
+
+    <div class="mb-5 sm:mb-6">
       <div class="relative">
         <input
           v-model="query"
           @keyup.enter="search"
           placeholder="Buscar GIFs..."
-          class="w-full py-3 pl-4 pr-12 border border-gray-200 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="w-full py-3 text-base pl-4 pr-12 border border-gray-200 shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 sm:py-3.5"
         />
 
         <button
@@ -52,7 +55,7 @@ const isFavorite = (id) => {
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
+    <div class="grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 sm:gap-5 sm:grid-cols-3 md:grid-cols-4">
       <div
         v-for="gif in gifs"
         :key="gif.id"
@@ -80,6 +83,7 @@ const isFavorite = (id) => {
           <img
             :src="gif.images.fixed_height.url"
             class="object-cover w-full h-full"
+            :alt="gif.title || 'GIF'"
           />
         </div>
       </div>

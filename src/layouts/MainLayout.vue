@@ -1,10 +1,21 @@
 <script setup>
+import { ref } from "vue";
+import { useQuasar } from "quasar";
 import Logo from "src/components/icon/Logo.vue";
 import Categoria from "src/components/icon/Categoria.vue";
 import Favorito from "src/components/icon/favorito.vue";
 import IconHome from "src/components/icon/IconHome.vue";
 import UserAbout from "src/components/icon/UserAbout.vue";
 import User from "src/components/icon/User.vue";
+
+const $q = useQuasar();
+const drawer = ref(false);
+
+const closeDrawerOnMobile = () => {
+  if ($q.screen.lt.md) {
+    drawer.value = false;
+  }
+};
 </script>
 
 <template>
@@ -18,26 +29,46 @@ import User from "src/components/icon/User.vue";
     >
       <q-toolbar class="flex justify-between px-4 py-2">
         <div class="flex items-center gap-2">
+          <q-btn
+            v-if="$q.screen.lt.md"
+            flat
+            round
+            dense
+            icon="menu"
+            class="mr-1 text-blue-700"
+            @click="drawer = !drawer"
+            aria-label="Abrir menu"
+          />
+
           <Logo class="w-12 h-12" />
           <span class="text-2xl font-bold text-white">Giphy</span>
         </div>
 
         <router-link
-          to="/About"
+          to="/about"
           class="flex items-center gap-2 transition hover:opacity-80"
         >
-          <span class="font-semibold text-white">Débora Vitória</span>
+          <span class="hidden font-semibold text-white sm:inline">
+            Débora Vitória
+          </span>
           <User class="w-6 text-blue-500 h-7" />
         </router-link>
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above class="bg-gray-100">
+    <q-drawer
+      :model-value="$q.screen.lt.md ? drawer : true"
+      @update:model-value="drawer = $event"
+      show-if-above
+      :breakpoint="768"
+      class="bg-gray-100"
+    >
       <q-list class="flex flex-col gap-1 p-2">
         <q-item
           to="/"
           clickable
           class="flex items-center gap-3 px-3 py-2 transition rounded-lg hover:bg-blue-100"
+          @click="closeDrawerOnMobile"
         >
           <IconHome class="w-10 h-12 pt-3 text-blue-400" />
           <span class="text-sm font-medium text-blue-300">Home</span>
@@ -47,6 +78,7 @@ import User from "src/components/icon/User.vue";
           to="/favorites"
           clickable
           class="flex items-center gap-3 px-3 py-2 transition rounded-lg hover:bg-blue-100"
+          @click="closeDrawerOnMobile"
         >
           <Favorito class="w-10 h-12 pt-3 text-blue-400" />
           <span class="text-sm font-medium text-blue-300">Favoritos</span>
@@ -56,6 +88,7 @@ import User from "src/components/icon/User.vue";
           to="/categories"
           clickable
           class="flex items-center gap-3 px-3 py-2 transition rounded-lg hover:bg-blue-100"
+          @click="closeDrawerOnMobile"
         >
           <Categoria class="w-10 h-10 pt-3 text-blue-400" />
           <span class="text-sm font-medium text-blue-300">Categorias</span>
@@ -65,6 +98,7 @@ import User from "src/components/icon/User.vue";
           to="/about"
           clickable
           class="flex items-center gap-3 px-3 py-2 transition rounded-lg hover:bg-blue-100"
+          @click="closeDrawerOnMobile"
         >
           <UserAbout class="w-12 h-12 pt-3 text-blue-400" />
           <span class="text-sm font-medium text-blue-300">Sobre</span>
