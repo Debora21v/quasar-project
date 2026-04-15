@@ -55,21 +55,12 @@
             :id="sectionId(categoryName)"
             class="rounded-2xl border border-blue-200 bg-white/80 p-4 shadow-[0_10px_40px_rgba(147,197,253,0.14)] backdrop-blur-xl scroll-mt-6 sm:rounded-3xl sm:p-6"
           >
-            <div
-              class="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between"
-            >
+            <div class="mb-4">
               <div
                 class="inline-flex items-center self-start px-4 py-2 text-sm font-semibold tracking-wide text-blue-700 border border-blue-200 rounded-full shadow-sm bg-blue-50 sm:text-base"
               >
                 {{ categoryName }}
               </div>
-
-              <button
-                class="self-start px-4 py-2 text-sm font-medium text-blue-600 transition bg-white border border-blue-200 rounded-full hover:bg-blue-50 sm:inline-flex"
-                @click="goToCategory(categoryName)"
-              >
-                Ver secao
-              </button>
             </div>
 
             <div
@@ -82,9 +73,16 @@
               >
                 <button
                   class="absolute z-10 p-2 transition rounded-full shadow top-2 right-2 bg-white/85 backdrop-blur hover:bg-blue-50"
-                  @click="store.addFavorite(gif)"
+                  @click="toggleFavorite(gif)"
                 >
-                  <Heart class="w-4 h-4 text-blue-300 fill-blue-300" />
+                  <Heart
+                    class="w-4 h-4"
+                    :class="
+                      isFavorite(gif.id)
+                        ? 'text-blue-300 fill-blue-300'
+                        : 'text-gray-400'
+                    "
+                  />
                 </button>
 
                 <div class="w-full overflow-hidden aspect-4/3 bg-blue-50">
@@ -104,7 +102,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, nextTick } from "vue";
+import { computed, nextTick, onMounted, ref } from "vue";
 import { Heart } from "lucide-vue-next";
 import { useGiphyStore } from "src/stores/gifStore";
 
@@ -113,9 +111,22 @@ const store = useGiphyStore();
 const activeCategory = ref("");
 const categorySections = ref({});
 const loadedSections = ref([]);
+const favorites = computed(() => store.favorites);
 
 const sectionId = (name) =>
   `category-${name.toLowerCase().replace(/\s+/g, "-")}`;
+
+const isFavorite = (id) =>
+  favorites.value.some((favorite) => favorite.id === id);
+
+const toggleFavorite = (gif) => {
+  if (isFavorite(gif.id)) {
+    store.removeFavorite(gif.id);
+    return;
+  }
+
+  store.addFavorite(gif);
+};
 
 const goToCategory = async (name) => {
   activeCategory.value = name;
@@ -142,6 +153,7 @@ const goToCategory = async (name) => {
 
 onMounted(async () => {
   await store.loadCategories();
+  await store.loadFavorites();
 
   if (store.categories.length > 0) {
     await goToCategory(store.categories[0].name);
